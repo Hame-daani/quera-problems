@@ -131,19 +131,24 @@ class Account:
         return phone
 
     def email_validation(self, email):
-        first_part, rem = email.split('@')
+        i = email.find('@')
+        first_part = email[:i]
+        rem = email[i+1:]
         i = rem.rfind('.')
         second_part = rem[:i]
         third_part = rem[i+1:]
-        valid_chars = "._-"
+        valid_chars = "._-0123456789"
+        valid_lower = "abcdefghijklmnopqrstuvwxyz"
+        valid_upper = valid_lower.upper()
+        valids = valid_lower + valid_upper
         for c in first_part:
-            if not (c.isalnum() or c in valid_chars):
+            if (c not in valids) and (c not in valid_chars):
                 raise Exception("invalid email")
         for c in second_part:
-            if not (c.isalnum() or c in valid_chars):
+            if (c not in valids) and (c not in valid_chars):
                 raise Exception("invalid email")
         for c in third_part:
-            if not c.isalpha():
+            if c not in valids:
                 raise Exception("invalid email")
         if len(third_part) > 5 or len(third_part) < 2:
             raise Exception("invalid email")
