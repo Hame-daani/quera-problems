@@ -82,7 +82,7 @@ class Project(models.Model):
 class EmployeeProjectRelation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     employee = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, related_name="projects")
+        Employee, on_delete=models.CASCADE)
     hours = models.PositiveIntegerField()
     role = models.CharField(max_length=100)
 
