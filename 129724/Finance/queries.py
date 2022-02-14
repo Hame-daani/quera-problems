@@ -42,13 +42,13 @@ def query_6():
 
 
 def query_7():
-    # return Department.objects.annotate(total=Sum("")).order_by("-total","name").first()
-    pass
+    return Department.objects.annotate(total=Sum("employee__salary__payslip__payment__amount")).order_by("-total", "name").first()
 
 
 def query_8():
-    # TODO
-    pass
+    return Department.objects.filter(
+        project__end_time__lte=F('project__estimated_end_time')
+    ).annotate(projects=Count('project')).order_by('-projects', 'name').first()
 
 
 def query_9(x):
