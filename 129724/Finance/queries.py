@@ -8,17 +8,22 @@ def query_0():
 
 
 def query_1():
-    # TODO
-    pass
+    return Payslip.objects.filter(payment=None).aggregate(
+        total_dept=Sum(F("base") + F("tax")+F('insurance')+F('overtime'))
+    )
 
 
 def query_2(x):
-    # TODO
-    pass
+    return Payslip.objects.filter(salary__overtime__gte=x).aggregate(
+        total_overtime=Sum(F('overtime'))
+    )
 
 
 def query_3():
     # TODO
+    # return Payment.objects.all().aggregate(
+    #     total=Sum(F('amount'))
+    # )
     pass
 
 
