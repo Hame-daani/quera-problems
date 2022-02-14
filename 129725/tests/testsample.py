@@ -14,23 +14,28 @@ class TestFoo(TestCase):
     def setUp(self):
         self.custom_user_admin = admin.site._registry.get(CustomUser)
 
-        date = jmodels.jdatetime.date(1395, 2, 11)
+        date = jmodels.jdatetime.date(1395, 11, 25)
         datetime = jmodels.jdatetime.datetime(1395, 2, 12, 12, 12, 12)
-        self.user1 = CustomUser.objects.create(username='isara', full_name='Sara Ahmadi', gender='F', national_code='5110126432', birthday_date=date, ceremony_datetime=datetime)
-        
+        self.user1 = CustomUser.objects.create(username='isara', full_name='Sara Ahmadi',
+                                               gender='F', national_code='5110126432', birthday_date=date, ceremony_datetime=datetime)
+
     def test_models_are_registered_admin(self):
         self.assertTrue(CustomUser in admin.site._registry)
 
     def test_model_date(self):
         self.assertIsInstance(self.user1.birthday_date, jmodels.jdatetime.date)
-    
+
     def test_model_gender(self):
         self.assertEqual(self.user1.gender, 'F')
-    
-    @freeze_time("2032-01-01")
+
+    @freeze_time("2022-02-14")
     def test_model_get_age(self):
         print(self.user1.get_age())
-        self.assertEqual(self.user1.get_age(), 15)
+        self.assertEqual(self.user1.get_age(), 5)
+
+    @freeze_time("2022-02-14")
+    def test_model_is_birthday(self):
+        self.assertTrue(self.user1.is_birthday())
 
     def test_form_is_valid(self):
         form_data = {
