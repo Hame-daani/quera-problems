@@ -38,8 +38,7 @@ def query_5(x):
 
 
 def query_6():
-    # TODO
-    pass
+    return Employee.objects.annotate(total_hours=Sum("projects__hours")).order_by("-total_hours", "account__username").first()
 
 
 def query_7():

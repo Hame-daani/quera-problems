@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
- 
+
 
 class Department(models.Model):
     name = models.CharField(max_length=100)
@@ -70,7 +70,8 @@ class Attendance(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=100)
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    employees = models.ManyToManyField(Employee, through='EmployeeProjectRelation')
+    employees = models.ManyToManyField(
+        Employee, through='EmployeeProjectRelation')
     estimated_end_time = models.DateTimeField()
     end_time = models.DateTimeField()
 
@@ -80,7 +81,8 @@ class Project(models.Model):
 
 class EmployeeProjectRelation(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    employee = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, related_name="projects")
     hours = models.PositiveIntegerField()
     role = models.CharField(max_length=100)
 
