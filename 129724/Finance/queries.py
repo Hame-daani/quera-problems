@@ -20,11 +20,9 @@ def query_2(x):
 
 
 def query_3():
-    # TODO
-    # return Payment.objects.all().aggregate(
-    #     total=Sum(F('amount'))
-    # )
-    pass
+    return Payment.objects.all().aggregate(
+        total=Sum(F('amount'))
+    )
 
 
 def query_4(x):
