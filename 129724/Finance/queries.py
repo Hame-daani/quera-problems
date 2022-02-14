@@ -32,8 +32,9 @@ def query_4(x):
 
 
 def query_5(x):
-    # TODO
-    pass
+    return Employee.objects.annotate(
+        total=Sum("salary__payslip__payment__amount")
+    ).filter(total__gt=x)
 
 
 def query_6():
