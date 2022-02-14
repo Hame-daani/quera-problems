@@ -26,8 +26,9 @@ def query_3():
 
 
 def query_4(x):
-    # TODO
-    pass
+    return EmployeeProjectRelation.objects.filter(employee__id=x).aggregate(
+        total_hours=Sum(F('hours'))
+    )
 
 
 def query_5(x):
