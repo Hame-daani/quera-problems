@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Max
+from django.db.models import Max, F, Q
 from django.shortcuts import get_object_or_404
 
 from problems.models import Submission, Problem
@@ -39,7 +39,11 @@ def list_problem_user_submissions(contest_id, user_id, problem_id):
 
 
 def list_users_solved_problem(contest_id, problem_id):
-    pass
+    return User.objects.filter(
+        submissions__problem__id=problem_id,
+        submissions__problem__contest__id=contest_id,
+        submissions__score=F('submissions__problem__score')
+    ).order_by("-submissions__submitted_time")
 
 
 def user_score(contest_id, user_id):
