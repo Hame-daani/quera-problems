@@ -17,11 +17,13 @@ def list_users(contest_id):
 
 
 def list_submissions(contest_id):
-    return Submission.objects.filter(problem__contest__id=1).order_by("-submitted_time")
+    return Submission.objects.filter(problem__contest__id=contest_id).order_by("-submitted_time")
 
 
 def list_problem_submissions(contest_id, problem_id):
-    pass
+    return Submission.objects.filter(
+        problem__id=problem_id, problem__contest__id=contest_id
+    ).order_by("-submitted_time")
 
 
 def list_user_submissions(contest_id, user_id):
