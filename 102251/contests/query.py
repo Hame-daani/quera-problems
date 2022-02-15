@@ -9,7 +9,7 @@ User = get_user_model()
 
 
 def list_problems(contest_id):
-    pass
+    return Contest.objects.get(id=contest_id).problems.all()
 
 
 def list_users(contest_id):
