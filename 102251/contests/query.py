@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Max, F, Q
+from django.db.models import Max, F, Q, Sum
 from django.shortcuts import get_object_or_404
 
 from problems.models import Submission, Problem
@@ -47,8 +47,24 @@ def list_users_solved_problem(contest_id, problem_id):
 
 
 def user_score(contest_id, user_id):
-    pass
+    # TODO not working on site
+    return Problem.objects.filter(
+        contest__id=contest_id,
+        submissions__participant__id=user_id
+    ).annotate(
+        max_score=Max("submissions__score")
+    ).aggregate(score=Sum("max_score"))['score']
+    # return Submission.objects.filter(
+    #     problem__contest__id=contest_id,
+    #     participant__id=user_id
+    # ).annotate(
+    #     max_score=Max('score')
+    # ).aggregate(score=Sum('max_score'))['score']
 
 
 def list_final_submissions(contest_id):
-    pass
+    return Submission.objects.filter(
+        problem__contest__id=1
+    ).annotate(
+        score_max=Max("score")
+    ).order_by("-submitted_time").values("participant_id", "problem_id", "score_max")
