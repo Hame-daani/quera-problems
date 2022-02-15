@@ -33,7 +33,9 @@ def list_user_submissions(contest_id, user_id):
 
 
 def list_problem_user_submissions(contest_id, user_id, problem_id):
-    pass
+    return Submission.objects.filter(
+        problem__id=problem_id, participant__id=user_id, problem__contest__id=contest_id
+    ).order_by("-submitted_time")
 
 
 def list_users_solved_problem(contest_id, problem_id):
