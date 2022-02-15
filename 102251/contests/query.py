@@ -13,7 +13,7 @@ def list_problems(contest_id):
 
 
 def list_users(contest_id):
-    pass
+    return Contest.objects.get(id=contest_id).participants.all()
 
 
 def list_submissions(contest_id):
