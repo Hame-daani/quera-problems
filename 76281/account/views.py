@@ -5,13 +5,13 @@ from django.urls import reverse
 from account.forms import *
 
 
-@login_required(login_url='login')
 def home(request):
     # TODO
     if request.method == 'GET':
-        team = None
-        if request.user.team:
+        try:
             team = request.user.team.name
+        except:
+            team = None
         return render(request, 'home.html', {'team': team})
 
 
@@ -79,6 +79,7 @@ def exit_team(request):
     # TODO
     if request.method == 'GET':
         user = request.user
-        user.team = None
-        user.save()
+        if user.team:
+            user.team = None
+            user.save()
         return redirect('home')
