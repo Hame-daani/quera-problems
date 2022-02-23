@@ -63,8 +63,8 @@ def user_score(contest_id, user_id):
 
 
 def list_final_submissions(contest_id):
-    return Submission.objects.filter(
-        problem__contest__id=1
+    return Submission.objects.filter(problem__contest__id=contest_id).values(
+        "participant_id", "problem_id"
     ).annotate(
         score_max=Max("score")
-    ).order_by("-submitted_time").values("participant_id", "problem_id", "score_max")
+    ).order_by(F('submitted_time'))

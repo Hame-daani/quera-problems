@@ -42,8 +42,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'apps.guard',
-    'apps.market'
+    'apps.guard.apps.GuardConfig',
+    'apps.market.apps.MarketConfig'
 ]
 
 MIDDLEWARE = [
