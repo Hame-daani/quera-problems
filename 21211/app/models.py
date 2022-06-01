@@ -8,6 +8,10 @@ class Category(models.Model):
         return self.name
 
 
+class Available(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(stock__gt=0)
+
 
 class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -18,6 +22,8 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    objects = models.Manager()
+    available = Available()
 
     def __str__(self):
         return self.name
@@ -28,7 +34,7 @@ class Order(models.Model):
     email = models.EmailField()
 
     def __str__(self):
-        return '{}'.format(self.id)
+        return "{}".format(self.id)
 
 
 class OrderItem(models.Model):
@@ -37,4 +43,4 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return '{}'.format(self.id)
+        return "{}".format(self.id)
