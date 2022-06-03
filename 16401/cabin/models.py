@@ -3,9 +3,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 car_type_choices = (
-    ('A', 'class A'),
-    ('B', 'class B'),
-    ('C', 'class C'),
+    ("A", "class A"),
+    ("B", "class B"),
+    ("C", "class C"),
 )
 
 
@@ -16,27 +16,32 @@ class Account(models.Model):
     phone = models.CharField(max_length=15, unique=True, primary_key=True)
     password = models.CharField(max_length=50)
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=None)
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, default=None
+    )
     object_id = models.PositiveIntegerField(default=None)
     content_object = GenericForeignKey()
 
     class Meta:
-        unique_together = ('content_type', 'object_id',)
+        unique_together = (
+            "content_type",
+            "object_id",
+        )
 
 
 class Admin(models.Model):
-    account = GenericRelation(Account, related_query_name='admins')
+    account = GenericRelation(Account, related_query_name="admins")
 
 
 class Rider(models.Model):
-    account = GenericRelation(Account, related_query_name='riders')
+    account = GenericRelation(Account, related_query_name="riders")
     rating = models.FloatField()
     x = models.FloatField()
     y = models.FloatField()
 
 
 class Driver(models.Model):
-    account = GenericRelation(Account, related_query_name='drivers')
+    account = GenericRelation(Account, related_query_name="drivers")
     rating = models.FloatField()
     x = models.FloatField()
     y = models.FloatField()
@@ -51,7 +56,7 @@ class RideRequest(models.Model):
 
 
 class Car(models.Model):
-    owner = models.ForeignKey(Driver)
+    owner = models.ForeignKey(Driver, on_delete=models.CASCADE)
     car_type = models.CharField(max_length=3, choices=car_type_choices)
     model = models.IntegerField()
     color = models.CharField(max_length=10)
