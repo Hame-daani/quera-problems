@@ -1,0 +1,2 @@
+def coloring(ls):
+    pass
