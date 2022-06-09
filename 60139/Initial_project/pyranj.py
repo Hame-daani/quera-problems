@@ -1,0 +1,2 @@
+class PyRanj () :
+    pass
