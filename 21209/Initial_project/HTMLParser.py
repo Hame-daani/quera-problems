@@ -3,6 +3,8 @@ class HTMLParser:
         self.html_doc = html_doc
         pass
 
+    # TODO: undone!
+
     def set_html_doc(self, html_doc):
         self.html_doc = html_doc
 
