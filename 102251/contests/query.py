@@ -17,7 +17,9 @@ def list_users(contest_id):
 
 
 def list_submissions(contest_id):
-    return Submission.objects.filter(problem__contest__id=contest_id).order_by("-submitted_time")
+    return Submission.objects.filter(problem__contest__id=contest_id).order_by(
+        "-submitted_time"
+    )
 
 
 def list_problem_submissions(contest_id, problem_id):
@@ -42,29 +44,35 @@ def list_users_solved_problem(contest_id, problem_id):
     return User.objects.filter(
         submissions__problem__id=problem_id,
         submissions__problem__contest__id=contest_id,
-        submissions__score=F('submissions__problem__score')
+        submissions__score=F("submissions__problem__score"),
     ).order_by("-submissions__submitted_time")
 
 
 def user_score(contest_id, user_id):
     # TODO not working on site
-    return Problem.objects.filter(
-        contest__id=contest_id,
-        submissions__participant__id=user_id
-    ).annotate(
-        max_score=Max("submissions__score")
-    ).aggregate(score=Sum("max_score"))['score']
-    # return Submission.objects.filter(
-    #     problem__contest__id=contest_id,
-    #     participant__id=user_id
+
+    # return Problem.objects.filter(
+    #     contest__id=contest_id,
+    #     submissions__participant__id=user_id
     # ).annotate(
-    #     max_score=Max('score')
-    # ).aggregate(score=Sum('max_score'))['score']
+    #     max_score=Max("submissions__score")
+    # ).aggregate(score=Sum("max_score"))['score']
+    return (
+        Submission.objects.filter(
+            problem__contest__id=contest_id, participant__id=user_id
+        )
+        .values("problem")
+        .annotate(max_score=Max("score"))
+        .aggregate(score=Sum("max_score"))["score"]
+    )
 
 
 def list_final_submissions(contest_id):
-    return Submission.objects.filter(problem__contest__id=contest_id).values(
-        "participant_id", "problem_id"
-    ).annotate(
-        score_max=Max("score")
-    ).order_by(F('submitted_time'))
+    return (
+        Submission.objects.filter(problem__contest__id=contest_id)
+        .values("participant_id", "problem_id")
+        .annotate(Max("score"))
+        # works without it :|
+        # idk!
+        # .order_by("-submitted_time")
+    )
